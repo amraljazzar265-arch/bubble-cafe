@@ -11,7 +11,11 @@
 <link rel="apple-touch-icon" href="logo/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<!-- only the weights actually used, loaded without blocking first paint -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500;700&display=swap" onload="this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500;700&display=swap" /></noscript>
+<!-- repeat visitors skip the intro, so the video is never downloaded again -->
+<script>try{if(localStorage.getItem("bc_intro_seen")==="1")document.documentElement.classList.add("no-intro")}catch(e){}</script>
 <style>
 /* ============================================================
    BUBBLE CAFÉ — Design tokens
@@ -116,6 +120,8 @@ section{position:relative;z-index:1}
   max-width:100%;max-height:100%;width:auto;height:auto;
   object-fit:contain;display:block;
 }
+/* returning visitor — never paint or download the intro */
+.no-intro .intro{display:none !important}
 .intro-skip{
   position:absolute;bottom:34px;inset-inline-end:26px;z-index:3;
   background:rgba(246,236,221,.12);border:1px solid var(--line);
@@ -394,9 +400,8 @@ section{position:relative;z-index:1}
 
 <!-- ===== Intro video ===== -->
 <div class="intro" id="intro" role="dialog" aria-label="مقدمة Bubble Café">
-  <video id="introVid" muted playsinline autoplay preload="auto">
-    <source src="intro.mp4" type="video/mp4" />
-  </video>
+  <!-- src is set from JS, so returning visitors never download it -->
+  <video id="introVid" muted playsinline autoplay preload="auto"></video>
   <button class="intro-skip" id="skipBtn">
     تخطي
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M13 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/></svg>
@@ -410,7 +415,7 @@ section{position:relative;z-index:1}
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="#top" aria-label="Bubble Café">
-      <span class="brand-badge"><img src="logo/logo-full.png" alt="" /></span>
+      <span class="brand-badge"><img src="logo/logo-256.webp" alt="" width="256" height="256" decoding="async" /></span>
       <span class="brand-word"><b>BUBBLE</b><i>CAFÉ</i></span>
     </a>
     <nav class="nav-links" aria-label="أقسام المنيو">
@@ -423,9 +428,9 @@ section{position:relative;z-index:1}
 
 <!-- ===== Hero ===== -->
 <section class="hero" id="top">
-  <div class="hero-bg"><img src="hero2.jpg.jpeg" alt="" /></div>
+  <div class="hero-bg"><img src="hero2.jpg.jpeg" alt="" decoding="async" fetchpriority="high" /></div>
   <div class="wrap hero-in">
-    <div class="hero-badge"><img src="logo/logo-full.png" alt="Bubble Café" /></div>
+    <div class="hero-badge"><img src="logo/logo-256.webp" alt="Bubble Café" width="256" height="256" decoding="async" /></div>
     <h1>عيش تجربة <span class="accent">البوبا</span></h1>
     <p class="hero-sub">ألذ مشروبات البوبا والقهوة المختصة والحلويات الطازجة — في كل رشفة فقاعة فرح.</p>
     <div class="chips">
@@ -479,7 +484,7 @@ section{position:relative;z-index:1}
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="brand" href="#top">
-          <span class="brand-badge"><img src="logo/logo-full.png" alt="" /></span>
+          <span class="brand-badge"><img src="logo/logo-256.webp" alt="" width="256" height="256" decoding="async" /></span>
           <span class="brand-word"><b>BUBBLE</b><i>CAFÉ</i></span>
         </a>
         <p>عيش تجربة البوبا — مشروبات وقهوة وحلويات محضّرة بحب في قلب المدينة.</p>
@@ -569,7 +574,8 @@ const P = [
   {img:"21.jpeg",cat:"extra",ar:"حليب مكثف محلى",en:"Condensed Milk",d:"إضافة حليب مكثّف محلّى.",price:2},
   {img:"01.jpeg",cat:"extra",ar:"كوفي كريمر",en:"Coffee Creamer",d:"إضافة كريمة القهوة.",price:2},
 ];
-const IMG = f => "assets/menu/" + f;
+// images are served as WebP (~40% lighter); data keeps the original filenames
+const IMG = f => "assets/menu/" + f.replace(/\.(jpe?g|png)$/i, ".webp");
 const catAr = id => (CATS.find(c=>c.id===id)||{}).ar || "";
 const catEn = id => (CATS.find(c=>c.id===id)||{}).en || "";
 const STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.6L22 9.2l-5.2 4.6L18.4 22 12 18.1 5.6 22l1.6-8.2L2 9.2l7.4-.6z"/></svg>';
@@ -593,7 +599,7 @@ function renderGrid(filter){
     card.className = "card" + (p.star ? " card--star" : "");
     card.style.animationDelay = (i%12*30)+"ms";
     card.innerHTML =
-      '<img class="card-img" src="'+IMG(p.img)+'" alt="'+p.ar+'" loading="lazy" />'+
+      '<img class="card-img" src="'+IMG(p.img)+'" alt="'+p.ar+'" loading="lazy" decoding="async" />'+
       (p.star?'<span class="badge-star">'+STAR+' الأكثر طلباً</span>':'')+
       '<div class="card-overlay">'+
         '<h3>'+p.ar+'</h3>'+
@@ -650,7 +656,7 @@ FEATURED.forEach((p,i)=>{
   el.className = "gal-item";
   el.dataset.i = i;
   el.innerHTML =
-    '<img src="'+IMG(p.img)+'" alt="'+p.ar+'" />'+
+    '<img src="'+IMG(p.img)+'" alt="'+p.ar+'" loading="lazy" decoding="async" />'+
     '<div class="gal-cap"><h3>'+p.ar+'</h3><span>'+p.en+'</span></div>';
   ring.appendChild(el);
 });
@@ -704,12 +710,20 @@ function closeIntro(){
   try{ vid.pause(); }catch(e){}
   setTimeout(()=>{ intro.style.display="none"; }, 650);
 }
-document.getElementById("skipBtn").addEventListener("click", closeIntro);
-vid.addEventListener("ended", closeIntro);
-// safety: if the video can't load, don't trap the user
-vid.addEventListener("error", ()=> setTimeout(closeIntro, 400));
-setTimeout(()=>{ if(vid.readyState < 2) closeIntro(); }, 10000);
-const p = vid.play(); if(p) p.catch(()=>{});
+if(document.documentElement.classList.contains("no-intro")){
+  // seen it before — the video was never requested, just get out of the way
+  intro.classList.add("hide");
+  intro.style.display = "none";
+}else{
+  try{ localStorage.setItem("bc_intro_seen","1"); }catch(e){}
+  vid.src = "intro.mp4";
+  document.getElementById("skipBtn").addEventListener("click", closeIntro);
+  vid.addEventListener("ended", closeIntro);
+  // safety: if the video can't load, don't trap the user
+  vid.addEventListener("error", ()=> setTimeout(closeIntro, 400));
+  setTimeout(()=>{ if(vid.readyState < 2) closeIntro(); }, 10000);
+  const p = vid.play(); if(p) p.catch(()=>{});
+}
 
 /* ---------- Ambient pearls ---------- */
 (function pearls(){
