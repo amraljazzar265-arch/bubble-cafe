@@ -708,7 +708,7 @@ document.getElementById("skipBtn").addEventListener("click", closeIntro);
 vid.addEventListener("ended", closeIntro);
 // safety: if the video can't load, don't trap the user
 vid.addEventListener("error", ()=> setTimeout(closeIntro, 400));
-setTimeout(()=>{ if(vid.readyState < 2) closeIntro(); }, 6000);
+setTimeout(()=>{ if(vid.readyState < 2) closeIntro(); }, 10000);
 const p = vid.play(); if(p) p.catch(()=>{});
 
 /* ---------- Ambient pearls ---------- */

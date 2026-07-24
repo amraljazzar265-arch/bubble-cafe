@@ -1,5 +1,6 @@
 # Files kept locally but NOT part of the deployed site
 data/
+_originals/
 hero.jpeg
 /*.png
 /*.txt
