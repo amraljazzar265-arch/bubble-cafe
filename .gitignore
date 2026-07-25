@@ -11,3 +11,6 @@ logo/logo-full.png
 logo/logo-full.webp
 logo/logo-mark.png
 logo/logo.jpeg
+
+# build-time mapping of the original product photos - local only
+assets/manifest.tsv
