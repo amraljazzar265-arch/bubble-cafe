@@ -714,9 +714,9 @@ let autoOffset = 0, dragRot = 0, lastInputT = 0;
 let velocity = 0;            // deg per frame, for the flick glide
 let spun = 0, handedOff = false;
 
-// one card per ~90px of drag (a touch shorter on narrow phones)
+// one card per ~200px of drag — slow enough to actually read each item
 function degPerPx(){
-  return anglePer / Math.min(120, Math.max(62, window.innerWidth * .26));
+  return anglePer / Math.min(260, Math.max(150, window.innerWidth * .52));
 }
 function turn(deg){
   if(!deg) return;
@@ -752,7 +752,8 @@ stage.addEventListener("pointermove", e=>{
   if(!dragging) return;
   const d = (e.clientX - lastX) * degPerPx();
   lastX = e.clientX;
-  velocity = d;
+  // a fast flick shouldn't fling the ring past several cards
+  velocity = Math.max(-1.6, Math.min(1.6, d));
   turn(d);
 });
 function endDrag(e){
@@ -785,7 +786,7 @@ stage.addEventListener("keydown", e=>{
 function frame(){
   if(!dragging && Math.abs(velocity) > .05){   // flick glide
     turn(velocity);
-    velocity *= .93;
+    velocity *= .90;
   }
   if(!reduce && !dragging && performance.now() - lastInputT > 160){ autoOffset += 0.32; }
   const rot = dragRot + autoOffset;
