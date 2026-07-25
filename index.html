@@ -14,8 +14,6 @@
 <!-- only the weights actually used, loaded without blocking first paint -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500;700&display=swap" onload="this.rel='stylesheet'" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500;700&display=swap" /></noscript>
-<!-- repeat visitors skip the intro, so the video is never downloaded again -->
-<script>try{if(localStorage.getItem("bc_intro_seen")==="1")document.documentElement.classList.add("no-intro")}catch(e){}</script>
 <style>
 /* ============================================================
    BUBBLE CAFÉ — Design tokens
@@ -108,31 +106,6 @@ section{position:relative;z-index:1}
   font-size:clamp(1.9rem,5vw,3rem);margin:.35em 0 .2em;line-height:1.15;
 }
 .sec-head p{color:var(--muted);max-width:44ch;margin:0 auto;font-size:1rem}
-
-/* ============================================================
-   Intro video overlay
-   ============================================================ */
-.intro{
-  position:fixed;inset:0;z-index:1000;background:#0c0704;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-}
-.intro video{
-  max-width:100%;max-height:100%;width:auto;height:auto;
-  object-fit:contain;display:block;
-}
-/* returning visitor — never paint or download the intro */
-.no-intro .intro{display:none !important}
-.intro-skip{
-  position:absolute;bottom:34px;inset-inline-end:26px;z-index:3;
-  background:rgba(246,236,221,.12);border:1px solid var(--line);
-  color:var(--cream);padding:11px 20px;border-radius:999px;
-  font-family:var(--font-display);font-weight:600;font-size:.95rem;
-  backdrop-filter:blur(8px);transition:background .2s,transform .2s;
-  display:inline-flex;align-items:center;gap:8px;
-}
-.intro-skip:hover{background:rgba(246,236,221,.22);transform:translateY(-2px)}
-.intro.hide{animation:introOut .6s var(--ease) forwards}
-@keyframes introOut{to{opacity:0;visibility:hidden}}
 
 /* ============================================================
    Nav
@@ -397,16 +370,6 @@ section{position:relative;z-index:1}
 </style>
 </head>
 <body>
-
-<!-- ===== Intro video ===== -->
-<div class="intro" id="intro" role="dialog" aria-label="مقدمة Bubble Café">
-  <!-- src is set from JS, so returning visitors never download it -->
-  <video id="introVid" muted playsinline autoplay preload="auto"></video>
-  <button class="intro-skip" id="skipBtn">
-    تخطي
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M13 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/></svg>
-  </button>
-</div>
 
 <!-- ===== Ambient pearls ===== -->
 <div class="pearls" id="pearls" aria-hidden="true"></div>
@@ -700,30 +663,6 @@ function frame(){
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
-
-/* ---------- Intro video ---------- */
-const intro = document.getElementById("intro");
-const vid = document.getElementById("introVid");
-function closeIntro(){
-  if(intro.classList.contains("hide")) return;
-  intro.classList.add("hide");
-  try{ vid.pause(); }catch(e){}
-  setTimeout(()=>{ intro.style.display="none"; }, 650);
-}
-if(document.documentElement.classList.contains("no-intro")){
-  // seen it before — the video was never requested, just get out of the way
-  intro.classList.add("hide");
-  intro.style.display = "none";
-}else{
-  try{ localStorage.setItem("bc_intro_seen","1"); }catch(e){}
-  vid.src = "intro.mp4";
-  document.getElementById("skipBtn").addEventListener("click", closeIntro);
-  vid.addEventListener("ended", closeIntro);
-  // safety: if the video can't load, don't trap the user
-  vid.addEventListener("error", ()=> setTimeout(closeIntro, 400));
-  setTimeout(()=>{ if(vid.readyState < 2) closeIntro(); }, 10000);
-  const p = vid.play(); if(p) p.catch(()=>{});
-}
 
 /* ---------- Ambient pearls ---------- */
 (function pearls(){
