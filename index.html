@@ -363,7 +363,23 @@ section{position:relative;z-index:1}
 @media(max-width:760px){
   .foot-grid{grid-template-columns:1fr;gap:32px}
   :root{--gal-radius:270px;--gal-cardw:200px;--gal-cardh:280px}
-  .tabs{top:70px}
+
+  /* Phone tabs: one slim scrollable row instead of a 3-row block that ate
+     half the screen. Padding stays >6px so the tab glow isn't clipped by
+     the horizontal overflow. */
+  .tabs{top:70px;flex-wrap:nowrap;justify-content:flex-start;
+    overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    gap:7px;padding:8px 9px;margin-bottom:24px;border-radius:14px;
+    scroll-padding-inline:9px;
+    background:linear-gradient(to bottom,rgba(24,13,8,.96),rgba(24,13,8,.86));
+    -webkit-mask-image:linear-gradient(to left,transparent 0,#000 16px,
+      #000 calc(100% - 16px),transparent 100%);
+    mask-image:linear-gradient(to left,transparent 0,#000 16px,
+      #000 calc(100% - 16px),transparent 100%)}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;white-space:nowrap;scroll-snap-align:center;
+    padding:7px 14px;font-size:.82rem}
 
   /* Phone hero: tighter vertical rhythm so badge, headline, chips and the
      scroll cue all fit above the fold without clipping */
@@ -627,6 +643,11 @@ CATS.forEach((c,i)=>{
     tabsEl.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected","false"));
     b.setAttribute("aria-selected","true");
     renderGrid(c.id);
+    // on phones the tabs are one scrollable row — keep the active one visible
+    if(tabsEl.scrollWidth > tabsEl.clientWidth + 4){
+      b.scrollIntoView({ block:"nearest", inline:"center",
+                         behavior: reduce ? "auto" : "smooth" });
+    }
     // jump back to the start of the items (just under the sticky nav + tabs)
     const gridTop = grid.getBoundingClientRect().top + window.scrollY;
     const y = Math.max(0, gridTop - 70 - tabsEl.offsetHeight - 16);
