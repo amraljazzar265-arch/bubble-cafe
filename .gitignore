@@ -5,3 +5,9 @@ hero.jpeg
 /*.png
 /*.txt
 intro.mp4
+
+# large source logos — kept locally, not part of the deployed site
+logo/logo-full.png
+logo/logo-full.webp
+logo/logo-mark.png
+logo/logo.jpeg

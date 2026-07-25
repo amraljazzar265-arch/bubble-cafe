@@ -12,17 +12,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <!-- only the weights actually used, loaded without blocking first paint -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500;700&display=swap" onload="this.rel='stylesheet'" />
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500;700&display=swap" /></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500&display=swap" onload="this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Fredoka:wght@500&family=Tajawal:wght@400;500&display=swap" /></noscript>
 <style>
 /* ============================================================
    BUBBLE CAFÉ — Design tokens
    ============================================================ */
 :root{
   --espresso:#180D08;      /* page background (deepest) */
-  --espresso-2:#22140C;    /* raised surface */
   --espresso-3:#2E1B10;    /* card / elevated */
-  --cocoa:#4A2E1E;         /* brand brown */
   --caramel:#C89563;       /* primary accent */
   --caramel-hi:#E3B784;    /* bright accent / highlight */
   --latte:#D9B892;         /* mid tan */
@@ -38,7 +36,6 @@
 
   --maxw:1200px;
   --radius:22px;
-  --radius-sm:14px;
   --ease:cubic-bezier(.22,.61,.36,1);
 
   --gal-radius:440px;
@@ -460,7 +457,9 @@ section{position:relative;z-index:1}
     <picture>
       <!-- the wide banner is 1.79:1; on a portrait phone cover() showed only
            its empty middle, so phones get a portrait crop of the drinks -->
+      <source media="(max-width:760px)" type="image/webp" srcset="hero-phone.webp" />
       <source media="(max-width:760px)" srcset="hero-phone.jpg" />
+      <source type="image/webp" srcset="hero-wide.webp" />
       <img src="hero2.jpg.jpeg" alt="" decoding="async" fetchpriority="high" />
     </picture>
   </div>
@@ -743,9 +742,14 @@ function handOff(){
   window.scrollTo({ top:y, behavior: reduce ? "auto" : "smooth" });
 }
 // let the section work again the next time it is visited
+let galVisible = true, galRunning = false;
 if("IntersectionObserver" in window){
   new IntersectionObserver(es=>{
-    es.forEach(e=>{ if(!e.isIntersecting){ spun = 0; handedOff = false; } });
+    es.forEach(e=>{
+      galVisible = e.isIntersecting;
+      if(galVisible) startGal();          // resume the ring only when on screen
+      else { spun = 0; handedOff = false; }
+    });
   },{threshold:0}).observe(galScroll);
 }
 
@@ -791,7 +795,10 @@ stage.addEventListener("keydown", e=>{
   turn(e.key === "ArrowRight" ? anglePer : -anglePer);
 });
 
+// the cards are built once, so hold the list instead of re-querying every frame
+const galItems = ring.querySelectorAll(".gal-item");
 function frame(){
+  if(!galVisible){ galRunning = false; return; }  // parked while off screen
   if(!dragging && Math.abs(velocity) > .05){   // flick glide
     turn(velocity);
     velocity *= .90;
@@ -800,8 +807,7 @@ function frame(){
   const rot = dragRot + autoOffset;
   ring.style.transform = "rotateY("+rot+"deg)";
   // depth-based opacity
-  const items = ring.querySelectorAll(".gal-item");
-  items.forEach((el,i)=>{
+  galItems.forEach((el,i)=>{
     const rel = ((i*anglePer + rot) % 360 + 360) % 360;
     const norm = rel > 180 ? 360-rel : rel;
     el.style.opacity = Math.max(0.28, 1 - norm/175).toFixed(3);
@@ -809,7 +815,8 @@ function frame(){
   });
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame);
+function startGal(){ if(!galRunning){ galRunning = true; requestAnimationFrame(frame); } }
+startGal();
 
 /* ---------- Ambient pearls ---------- */
 (function pearls(){
