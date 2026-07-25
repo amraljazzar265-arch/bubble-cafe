@@ -360,21 +360,10 @@ section{position:relative;z-index:1}
 .foot-col a{color:inherit;text-decoration:none;overflow-wrap:anywhere;
   transition:color .2s}
 .foot-col a:hover,.foot-col a:focus-visible{color:var(--caramel-hi)}
-/* address → Google Maps: the line itself is tappable, and a pill under it
-   makes that obvious at a glance */
-.map-li{flex-direction:column;align-items:flex-start;gap:10px}
+/* address → Google Maps: underlined so the line reads as tappable */
 .map-link{display:flex;align-items:flex-start;gap:9px;color:var(--latte);
   text-decoration:underline;text-decoration-color:rgba(200,149,99,.45);
   text-underline-offset:4px}
-.map-btn{display:inline-flex;align-items:center;gap:8px;
-  padding:9px 15px;border-radius:999px;font-size:.85rem;
-  font-family:var(--font-display);font-weight:600;color:var(--cream);
-  background:var(--espresso-3);border:1px solid var(--line);
-  transition:transform .2s,background .2s,color .2s,border-color .2s}
-.map-btn:hover,.map-btn:focus-visible{transform:translateY(-2px);
-  background:var(--caramel);color:#2a1509;border-color:transparent}
-.map-btn:hover svg,.map-btn:focus-visible svg{color:#2a1509}
-.map-btn svg{margin-top:0}
 .socials{display:flex;gap:12px;margin-top:6px}
 .socials a{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
   background:var(--espresso-3);border:1px solid var(--line);color:var(--cream);
@@ -539,14 +528,14 @@ section{position:relative;z-index:1}
           <a href="https://www.instagram.com/bubble_cafe.1" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
           <a href="https://www.facebook.com/share/1DLv1aZ8sm/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
           <a href="https://wa.me/963952515705" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.7 7.4L3 21l2.1-5.3A8.5 8.5 0 1 1 21 11.5z"/><path d="M8.5 9c0 3 2.5 5.5 5.5 5.5"/></svg></a>
+          <a href="https://maps.app.goo.gl/L6fcR38FQY2Dx5wL8" target="_blank" rel="noopener" aria-label="موقعنا على الخرائط"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a>
           <a href="mailto:bubble.cafe.sy@gmail.com" aria-label="البريد الإلكتروني"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
         </div>
       </div>
       <div class="foot-col">
         <h4>تواصل معنا</h4>
         <ul>
-          <li class="map-li"><a class="map-link" href="https://maps.app.goo.gl/L6fcR38FQY2Dx5wL8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>سوريا — حماة، حي الكرامة (البعث سابقاً)، دوار الباشا</span></a>
-            <a class="map-btn" href="https://maps.app.goo.gl/L6fcR38FQY2Dx5wL8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>افتح الموقع على الخرائط</a></li>
+          <li class="map-li"><a class="map-link" href="https://maps.app.goo.gl/L6fcR38FQY2Dx5wL8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>سوريا — حماة، حي الكرامة (البعث سابقاً)، دوار الباشا</span></a></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><a href="tel:+963952515705" dir="ltr">+963 952 515 705</a></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg><a href="mailto:bubble.cafe.sy@gmail.com" dir="ltr">bubble.cafe.sy@gmail.com</a></li>
         </ul>
@@ -554,8 +543,8 @@ section{position:relative;z-index:1}
       <div class="foot-col">
         <h4>ساعات العمل</h4>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>السبت – الخميس · ٤م – ١٢ص</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>الجمعة · ٢م – ١ص</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>مفتوحون دائماً · كل أيام الأسبوع بلا عطلة</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18"/><path d="M5 11V8a7 7 0 0 1 14 0v3"/><path d="M4 11h16v2a8 8 0 0 1-16 0z"/><path d="M7 21h10"/></svg>أبوابنا ما بتسكّر — تفضّل بأي وقت</li>
         </ul>
       </div>
     </div>
@@ -566,9 +555,7 @@ section{position:relative;z-index:1}
 <script>
 /* ============================================================
    Menu data  (image files live in assets/menu/)
-   price = placeholder — edit freely
    ============================================================ */
-const CURRENCY = "ر.س";
 const CATS = [
   {id:"all",   ar:"الكل",            en:"All"},
   {id:"hot",   ar:"القهوة الساخنة",  en:"Hot Coffee"},
@@ -579,50 +566,50 @@ const CATS = [
 ];
 const P = [
   // hot
-  {img:"02.jpeg",cat:"hot",ar:"سنجل إسبريسو",en:"Single Espresso",d:"جرعة مركّزة من أجود حبوب البن.",price:8},
-  {img:"03.jpeg",cat:"hot",ar:"دبل إسبريسو",en:"Double Espresso",d:"جرعتان من الإسبريسو الغني.",price:10},
-  {img:"14.jpeg",cat:"hot",ar:"أميركانو",en:"Americano",d:"إسبريسو ممدود بالماء الساخن.",price:11},
-  {img:"28.jpeg",cat:"hot",ar:"كابتشينو",en:"Cappuccino",d:"إسبريسو مع رغوة حليب مخمليّة.",price:13},
-  {img:"31.jpeg",cat:"hot",ar:"لاتيه",en:"Latte",d:"حليب مبخّر ناعم فوق إسبريسو.",price:13},
-  {img:"23.jpeg",cat:"hot",ar:"سبانيش لاتيه",en:"Spanish Latte",d:"لاتيه بالحليب المكثّف المحلّى.",price:15,star:true},
-  {img:"29.jpeg",cat:"hot",ar:"كراميل لاتيه",en:"Caramel Latte",d:"لاتيه بلمسة كراميل ذهبية.",price:15},
-  {img:"32.jpeg",cat:"hot",ar:"موكا",en:"Mocha",d:"إسبريسو وشوكولاتة وحليب.",price:15},
-  {img:"40.jpeg",cat:"hot",ar:"وايت موكا",en:"White Mocha",d:"موكا بالشوكولاتة البيضاء.",price:16},
-  {img:"27.jpeg",cat:"hot",ar:"قهوة V60",en:"V60 Pour Over",d:"تقطير يدوي يبرز نكهة الحبة.",price:14},
-  {img:"12.jpeg",cat:"hot",ar:"القهوة",en:"House Coffee",d:"قهوتنا اليومية الطازجة.",price:10},
-  {img:"26.jpeg",cat:"hot",ar:"قهوة ٣ في ١",en:"3 in 1 Coffee",d:"قهوة سريعة بطعم متكامل.",price:8},
-  {img:"39.jpeg",cat:"hot",ar:"هوت شوكليت",en:"Hot Chocolate",d:"شوكولاتة ساخنة كريمية.",price:14},
+  {img:"02.jpeg",cat:"hot",ar:"سنجل إسبريسو",en:"Single Espresso",d:"جرعة مركّزة من أجود حبوب البن."},
+  {img:"03.jpeg",cat:"hot",ar:"دبل إسبريسو",en:"Double Espresso",d:"جرعتان من الإسبريسو الغني."},
+  {img:"14.jpeg",cat:"hot",ar:"أميركانو",en:"Americano",d:"إسبريسو ممدود بالماء الساخن."},
+  {img:"28.jpeg",cat:"hot",ar:"كابتشينو",en:"Cappuccino",d:"إسبريسو مع رغوة حليب مخمليّة."},
+  {img:"31.jpeg",cat:"hot",ar:"لاتيه",en:"Latte",d:"حليب مبخّر ناعم فوق إسبريسو."},
+  {img:"23.jpeg",cat:"hot",ar:"سبانيش لاتيه",en:"Spanish Latte",d:"لاتيه بالحليب المكثّف المحلّى.",star:true},
+  {img:"29.jpeg",cat:"hot",ar:"كراميل لاتيه",en:"Caramel Latte",d:"لاتيه بلمسة كراميل ذهبية."},
+  {img:"32.jpeg",cat:"hot",ar:"موكا",en:"Mocha",d:"إسبريسو وشوكولاتة وحليب."},
+  {img:"40.jpeg",cat:"hot",ar:"وايت موكا",en:"White Mocha",d:"موكا بالشوكولاتة البيضاء."},
+  {img:"27.jpeg",cat:"hot",ar:"قهوة V60",en:"V60 Pour Over",d:"تقطير يدوي يبرز نكهة الحبة."},
+  {img:"12.jpeg",cat:"hot",ar:"القهوة",en:"House Coffee",d:"قهوتنا اليومية الطازجة."},
+  {img:"26.jpeg",cat:"hot",ar:"قهوة ٣ في ١",en:"3 in 1 Coffee",d:"قهوة سريعة بطعم متكامل."},
+  {img:"39.jpeg",cat:"hot",ar:"هوت شوكليت",en:"Hot Chocolate",d:"شوكولاتة ساخنة كريمية."},
   // iced
-  {img:"09.jpeg",cat:"iced",ar:"آيس لاتيه",en:"Iced Latte",d:"لاتيه بارد منعش على الثلج.",price:14},
-  {img:"06.jpeg",cat:"iced",ar:"آيس سبانيش لاتيه",en:"Iced Spanish Latte",d:"سبانيش لاتيه مثلّج بالحليب المكثّف.",price:16,star:true},
-  {img:"07.jpeg",cat:"iced",ar:"آيس كراميل لاتيه",en:"Iced Caramel Latte",d:"كراميل لاتيه بارد بطبقات ذهبية.",price:16},
-  {img:"08.jpg", cat:"iced",ar:"آيس كراميل لاتيه بابل",en:"Bubble Iced Caramel Latte",d:"كراميل لاتيه مثلّج مع لؤلؤ البوبا.",price:18,star:true},
-  {img:"10.jpeg",cat:"iced",ar:"آيس موكا",en:"Iced Mocha",d:"موكا باردة بالشوكولاتة.",price:16},
-  {img:"11.jpeg",cat:"iced",ar:"آيس وايت موكا",en:"Iced White Mocha",d:"وايت موكا مثلّجة كريمية.",price:17},
-  {img:"05.jpeg",cat:"iced",ar:"آيس V60",en:"Iced V60",d:"تقطير V60 على الثلج.",price:15},
-  {img:"13.jpeg",cat:"iced",ar:"القهوة الباردة",en:"Iced Coffee",d:"قهوة باردة سوداء منعشة.",price:12},
+  {img:"09.jpeg",cat:"iced",ar:"آيس لاتيه",en:"Iced Latte",d:"لاتيه بارد منعش على الثلج."},
+  {img:"06.jpeg",cat:"iced",ar:"آيس سبانيش لاتيه",en:"Iced Spanish Latte",d:"سبانيش لاتيه مثلّج بالحليب المكثّف.",star:true},
+  {img:"07.jpeg",cat:"iced",ar:"آيس كراميل لاتيه",en:"Iced Caramel Latte",d:"كراميل لاتيه بارد بطبقات ذهبية."},
+  {img:"08.jpg", cat:"iced",ar:"آيس كراميل لاتيه بابل",en:"Bubble Iced Caramel Latte",d:"كراميل لاتيه مثلّج مع لؤلؤ البوبا.",star:true},
+  {img:"10.jpeg",cat:"iced",ar:"آيس موكا",en:"Iced Mocha",d:"موكا باردة بالشوكولاتة."},
+  {img:"11.jpeg",cat:"iced",ar:"آيس وايت موكا",en:"Iced White Mocha",d:"وايت موكا مثلّجة كريمية."},
+  {img:"05.jpeg",cat:"iced",ar:"آيس V60",en:"Iced V60",d:"تقطير V60 على الثلج."},
+  {img:"13.jpeg",cat:"iced",ar:"القهوة الباردة",en:"Iced Coffee",d:"قهوة باردة سوداء منعشة."},
   // bubble & mojito
-  {img:"15.jpg", cat:"bubble",ar:"بابل موهيتو",en:"Bubble Mojito",d:"موهيتو منعش مع لؤلؤ البوبا.",price:17,star:true},
-  {img:"04.jpg", cat:"bubble",ar:"موهيتو ميكس",en:"Mojito Mix",d:"خليط الموهيتو المنعش.",price:15},
-  {img:"16.jpg", cat:"bubble",ar:"باشن فروت",en:"Passion Fruit",d:"نكهة الباشن فروت الاستوائية.",price:16},
-  {img:"17.jpg", cat:"bubble",ar:"بطيخ",en:"Watermelon",d:"بطيخ منعش على الثلج.",price:15},
-  {img:"18.jpg", cat:"bubble",ar:"بلو بيري",en:"Blueberry",d:"توت أزرق حلو ومنعش.",price:16},
-  {img:"19.jpg", cat:"bubble",ar:"بلو هاواي",en:"Blue Hawaii",d:"أزرق استوائي منعش.",price:16},
-  {img:"22.jpg", cat:"bubble",ar:"رمان",en:"Pomegranate",d:"رمان طبيعي منعش.",price:16},
-  {img:"25.jpg", cat:"bubble",ar:"فراولة",en:"Strawberry",d:"فراولة منعشة على الثلج.",price:15},
-  {img:"30.jpg", cat:"bubble",ar:"كيوي",en:"Kiwi",d:"كيوي أخضر منعش.",price:15},
-  {img:"20.jpg", cat:"bubble",ar:"حليب بابل بالفراولة",en:"Bubble Strawberry Milk",d:"حليب الفراولة مع لؤلؤ البوبا.",price:18,star:true},
+  {img:"15.jpg", cat:"bubble",ar:"بابل موهيتو",en:"Bubble Mojito",d:"موهيتو منعش مع لؤلؤ البوبا.",star:true},
+  {img:"04.jpg", cat:"bubble",ar:"موهيتو ميكس",en:"Mojito Mix",d:"خليط الموهيتو المنعش."},
+  {img:"16.jpg", cat:"bubble",ar:"باشن فروت",en:"Passion Fruit",d:"نكهة الباشن فروت الاستوائية."},
+  {img:"17.jpg", cat:"bubble",ar:"بطيخ",en:"Watermelon",d:"بطيخ منعش على الثلج."},
+  {img:"18.jpg", cat:"bubble",ar:"بلو بيري",en:"Blueberry",d:"توت أزرق حلو ومنعش."},
+  {img:"19.jpg", cat:"bubble",ar:"بلو هاواي",en:"Blue Hawaii",d:"أزرق استوائي منعش."},
+  {img:"22.jpg", cat:"bubble",ar:"رمان",en:"Pomegranate",d:"رمان طبيعي منعش."},
+  {img:"25.jpg", cat:"bubble",ar:"فراولة",en:"Strawberry",d:"فراولة منعشة على الثلج."},
+  {img:"30.jpg", cat:"bubble",ar:"كيوي",en:"Kiwi",d:"كيوي أخضر منعش."},
+  {img:"20.jpg", cat:"bubble",ar:"حليب بابل بالفراولة",en:"Bubble Strawberry Milk",d:"حليب الفراولة مع لؤلؤ البوبا.",star:true},
   // milkshakes
-  {img:"33.jpg", cat:"shake",ar:"ميلك شيك براونيز",en:"Brownie Milkshake",d:"ميلك شيك بقطع البراوني.",price:19,star:true},
-  {img:"34.jpg", cat:"shake",ar:"ميلك شيك شوكولا",en:"Chocolate Milkshake",d:"شوكولاتة غنية ومثلّجة.",price:18},
-  {img:"35.jpg", cat:"shake",ar:"ميلك شيك فانيلا",en:"Vanilla Milkshake",d:"فانيلا كريمية كلاسيكية.",price:17},
-  {img:"36.jpg", cat:"shake",ar:"ميلك شيك فراولة",en:"Strawberry Milkshake",d:"فراولة طازجة ومثلّجة.",price:18},
-  {img:"37.jpg", cat:"shake",ar:"ميلك شيك كيندر",en:"Kinder Milkshake",d:"بنكهة كيندر المحبوبة.",price:20,star:true},
-  {img:"38.jpg", cat:"shake",ar:"ميلك شيك لوتس",en:"Lotus Milkshake",d:"بسكويت لوتس كراميلي.",price:20,star:true},
+  {img:"33.jpg", cat:"shake",ar:"ميلك شيك براونيز",en:"Brownie Milkshake",d:"ميلك شيك بقطع البراوني.",star:true},
+  {img:"34.jpg", cat:"shake",ar:"ميلك شيك شوكولا",en:"Chocolate Milkshake",d:"شوكولاتة غنية ومثلّجة."},
+  {img:"35.jpg", cat:"shake",ar:"ميلك شيك فانيلا",en:"Vanilla Milkshake",d:"فانيلا كريمية كلاسيكية."},
+  {img:"36.jpg", cat:"shake",ar:"ميلك شيك فراولة",en:"Strawberry Milkshake",d:"فراولة طازجة ومثلّجة."},
+  {img:"37.jpg", cat:"shake",ar:"ميلك شيك كيندر",en:"Kinder Milkshake",d:"بنكهة كيندر المحبوبة.",star:true},
+  {img:"38.jpg", cat:"shake",ar:"ميلك شيك لوتس",en:"Lotus Milkshake",d:"بسكويت لوتس كراميلي.",star:true},
   // extras
-  {img:"24.jpeg",cat:"extra",ar:"شوت إسبريسو إضافي",en:"Extra Espresso Shot",d:"جرعة إسبريسو إضافية.",price:3},
-  {img:"21.jpeg",cat:"extra",ar:"حليب مكثف محلى",en:"Condensed Milk",d:"إضافة حليب مكثّف محلّى.",price:2},
-  {img:"01.jpeg",cat:"extra",ar:"كوفي كريمر",en:"Coffee Creamer",d:"إضافة كريمة القهوة.",price:2},
+  {img:"24.jpeg",cat:"extra",ar:"شوت إسبريسو إضافي",en:"Extra Espresso Shot",d:"جرعة إسبريسو إضافية."},
+  {img:"21.jpeg",cat:"extra",ar:"حليب مكثف محلى",en:"Condensed Milk",d:"إضافة حليب مكثّف محلّى."},
+  {img:"01.jpeg",cat:"extra",ar:"كوفي كريمر",en:"Coffee Creamer",d:"إضافة كريمة القهوة."},
 ];
 // images are served as WebP (~40% lighter); data keeps the original filenames
 const IMG = f => "assets/menu/" + f.replace(/\.(jpe?g|png)$/i, ".webp");
