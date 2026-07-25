@@ -196,8 +196,10 @@ section{position:relative;z-index:1}
    Featured circular 3D gallery
    ============================================================ */
 .featured{background:linear-gradient(to bottom,transparent, rgba(46,27,16,.35), transparent)}
-.gal-scroll{height:400vh;position:relative}
-.gal-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+/* One screen tall: the ring is turned by a horizontal drag/swipe, not by the
+   page scroll, so the section no longer needs 400vh of scroll track. */
+.gal-scroll{height:100svh;min-height:540px;position:relative}
+.gal-sticky{position:sticky;top:0;height:100%;display:flex;flex-direction:column;
   align-items:center;justify-content:center;overflow:hidden}
 .gal-head{position:absolute;top:clamp(64px,11vh,110px);text-align:center;z-index:5;width:100%;padding-inline:20px}
 .gal-head .eyebrow{display:block}
@@ -205,7 +207,11 @@ section{position:relative;z-index:1}
   font-size:clamp(1.7rem,5vw,2.8rem);margin:.3em 0 0;color:var(--cream)}
 .gal-head p{color:var(--muted);font-size:.9rem;margin:.4em 0 0}
 .gal-stage{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  perspective:2000px}
+  perspective:2000px;
+  /* the browser keeps vertical panning, we get the horizontal gesture */
+  touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+.gal-stage.is-dragging{cursor:grabbing}
+.gal-stage img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
 .gal-ring{position:relative;width:var(--gal-cardw);height:var(--gal-cardh);
   transform-style:preserve-3d;will-change:transform}
 .gal-item{position:absolute;inset:0;width:var(--gal-cardw);height:var(--gal-cardh);
@@ -474,14 +480,15 @@ section{position:relative;z-index:1}
       <div class="gal-head">
         <span class="eyebrow">Signatures</span>
         <h2>الأكثر طلباً</h2>
-        <p>مرّر للأسفل لتدوير المعرض</p>
+        <p>اسحب يميناً أو يساراً لتدوير المعرض</p>
       </div>
-      <div class="gal-stage">
+      <div class="gal-stage" id="galStage" tabindex="0" role="group"
+           aria-label="معرض الأكثر طلباً — اسحب أفقياً للتدوير">
         <div class="gal-ring" id="galRing"></div>
       </div>
       <div class="gal-hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-        scroll
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12h14"/><path d="m12 5-7 7 7 7"/><path d="m12 19 7-7-7-7"/></svg>
+        swipe
       </div>
     </div>
   </div>
@@ -697,24 +704,91 @@ function layoutRing(){
 layoutRing();
 window.addEventListener("resize", layoutRing);
 
+/* The ring is turned by a HORIZONTAL gesture (finger swipe, trackpad, mouse
+   drag, arrow keys) instead of by the page scroll. Once it has been turned a
+   full circle — every signature seen — the reader is handed back down to the
+   menu and normal vertical scrolling. */
 const galScroll = document.getElementById("galScroll");
-let autoOffset = 0, scrollRot = 0, ticking = false, lastScrollT = 0;
-function updateScrollRot(){
-  const rect = galScroll.getBoundingClientRect();
-  const total = galScroll.offsetHeight - window.innerHeight;
-  const progress = Math.min(1, Math.max(0, -rect.top / total));
-  scrollRot = progress * 360;
-  lastScrollT = performance.now();
-  ticking = false;
+const stage = document.getElementById("galStage");
+let autoOffset = 0, dragRot = 0, lastInputT = 0;
+let velocity = 0;            // deg per frame, for the flick glide
+let spun = 0, handedOff = false;
+
+// one card per ~90px of drag (a touch shorter on narrow phones)
+function degPerPx(){
+  return anglePer / Math.min(120, Math.max(62, window.innerWidth * .26));
 }
-window.addEventListener("scroll", ()=>{
-  if(!ticking){ ticking = true; requestAnimationFrame(updateScrollRot); }
-}, {passive:true});
-updateScrollRot();
+function turn(deg){
+  if(!deg) return;
+  dragRot += deg;
+  spun += Math.abs(deg);
+  lastInputT = performance.now();
+  if(!handedOff && spun >= 360) handOff();
+}
+function handOff(){
+  handedOff = true;
+  const menu = document.getElementById("menu");
+  const r = galScroll.getBoundingClientRect();
+  // only take over if the gallery is actually the screen the reader is on
+  if(!menu || r.top > window.innerHeight*.5 || r.bottom < window.innerHeight*.5) return;
+  const y = menu.getBoundingClientRect().top + window.scrollY - 70;
+  window.scrollTo({ top:y, behavior: reduce ? "auto" : "smooth" });
+}
+// let the section work again the next time it is visited
+if("IntersectionObserver" in window){
+  new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(!e.isIntersecting){ spun = 0; handedOff = false; } });
+  },{threshold:0}).observe(galScroll);
+}
+
+let dragging = false, lastX = 0;
+stage.addEventListener("pointerdown", e=>{
+  if(e.pointerType === "mouse" && e.button !== 0) return;
+  dragging = true; lastX = e.clientX; velocity = 0;
+  stage.classList.add("is-dragging");
+  if(e.pointerType !== "touch"){ try{ stage.setPointerCapture(e.pointerId); }catch(_){} }
+});
+stage.addEventListener("pointermove", e=>{
+  if(!dragging) return;
+  const d = (e.clientX - lastX) * degPerPx();
+  lastX = e.clientX;
+  velocity = d;
+  turn(d);
+});
+function endDrag(e){
+  if(!dragging) return;
+  dragging = false;
+  stage.classList.remove("is-dragging");
+  try{ stage.releasePointerCapture(e.pointerId); }catch(_){}
+}
+stage.addEventListener("pointerup", endDrag);
+stage.addEventListener("pointercancel", endDrag);
+stage.addEventListener("pointerleave", endDrag);
+
+// trackpad side-swipe (and shift+wheel); a plain vertical wheel still scrolls
+stage.addEventListener("wheel", e=>{
+  const dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX
+           : (e.shiftKey ? e.deltaY : 0);
+  if(!dx) return;
+  e.preventDefault();
+  velocity = 0;
+  turn(-dx * degPerPx());
+}, {passive:false});
+
+stage.addEventListener("keydown", e=>{
+  if(e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  e.preventDefault();
+  velocity = 0;
+  turn(e.key === "ArrowRight" ? anglePer : -anglePer);
+});
 
 function frame(){
-  if(!reduce && performance.now() - lastScrollT > 160){ autoOffset += 0.32; }
-  const rot = scrollRot + autoOffset;
+  if(!dragging && Math.abs(velocity) > .05){   // flick glide
+    turn(velocity);
+    velocity *= .93;
+  }
+  if(!reduce && !dragging && performance.now() - lastInputT > 160){ autoOffset += 0.32; }
+  const rot = dragRot + autoOffset;
   ring.style.transform = "rotateY("+rot+"deg)";
   // depth-based opacity
   const items = ring.querySelectorAll(".gal-item");
