@@ -29,6 +29,8 @@
   --line:rgba(200,149,99,.20);
   --line-soft:rgba(200,149,99,.12);
   --foam:#FBF6EE;
+  --honey:#F0B55A;         /* prices only — warmer and brighter than caramel */
+  --honey-hi:#FFD494;
 
   --font-display:"Baloo Bhaijaan 2", system-ui, sans-serif;
   --font-body:"Tajawal", system-ui, sans-serif;
@@ -332,6 +334,16 @@ section{position:relative;z-index:1}
   letter-spacing:.02em;margin-top:2px}
 .card .desc{color:rgba(246,236,221,.86);font-size:.86rem;line-height:1.55;margin:9px 0 0;
   text-shadow:0 1px 6px rgba(0,0,0,.5)}
+/* price: honey gold on smoked glass — the only gold on the page, so it reads
+   as its own thing while staying inside the coffee palette */
+.card .price{align-self:flex-start;margin-top:12px;
+  display:inline-flex;align-items:baseline;gap:5px;padding:7px 15px;border-radius:999px;
+  font-family:var(--font-display);font-weight:800;font-size:1.05rem;line-height:1.25;
+  color:var(--honey-hi);background:rgba(18,10,5,.60);
+  border:1px solid rgba(240,181,90,.42);backdrop-filter:blur(6px);
+  box-shadow:0 6px 18px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.09)}
+.card .price .cur{font-family:var(--font-body);font-size:.7rem;font-weight:700;
+  color:var(--honey);opacity:.9}
 .badge-star{position:absolute;top:14px;inset-inline-end:14px;z-index:2;
   display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);
   font-weight:700;font-size:.7rem;color:#2a1509;
@@ -621,56 +633,60 @@ section{position:relative;z-index:1}
 /* ============================================================
    Menu data  (image files live in assets/menu/)
    ============================================================ */
+/* Sections and names follow the café's printed menu.
+   Prices are Syrian pounds; "80 / 120" is small / large as printed. */
 const CATS = [
   {id:"all",   ar:"الكل",            en:"All"},
-  {id:"hot",   ar:"القهوة الساخنة",  en:"Hot Coffee"},
-  {id:"iced",  ar:"القهوة الباردة",  en:"Iced Coffee"},
-  {id:"bubble",ar:"بوبا وموهيتو",    en:"Bubble & Mojito"},
-  {id:"shake", ar:"ميلك شيك",        en:"Milkshakes"},
+  {id:"hot",   ar:"مشروبات ساخنة",   en:"Hot Drinks"},
+  {id:"cold",  ar:"مشروبات باردة",   en:"Cold Drinks"},
+  {id:"bubble",ar:"مشروبات بابل",    en:"Bubble Drinks"},
+  {id:"mojito",ar:"موهيتو",          en:"Mojito"},
+  {id:"shake", ar:"ميلك شيك",        en:"Milkshake"},
   {id:"extra", ar:"إضافات",          en:"Extras"},
 ];
 const P = [
   // hot
-  {img:"02.jpeg",cat:"hot",ar:"سنجل إسبريسو",en:"Single Espresso",d:"جرعة مركّزة من أجود حبوب البن."},
-  {img:"03.jpeg",cat:"hot",ar:"دبل إسبريسو",en:"Double Espresso",d:"جرعتان من الإسبريسو الغني."},
-  {img:"14.jpeg",cat:"hot",ar:"أميركانو",en:"Americano",d:"إسبريسو ممدود بالماء الساخن."},
-  {img:"28.jpeg",cat:"hot",ar:"كابتشينو",en:"Cappuccino",d:"إسبريسو مع رغوة حليب مخمليّة."},
-  {img:"31.jpeg",cat:"hot",ar:"لاتيه",en:"Latte",d:"حليب مبخّر ناعم فوق إسبريسو."},
-  {img:"23.jpeg",cat:"hot",ar:"سبانيش لاتيه",en:"Spanish Latte",d:"لاتيه بالحليب المكثّف المحلّى.",star:true},
-  {img:"29.jpeg",cat:"hot",ar:"كراميل لاتيه",en:"Caramel Latte",d:"لاتيه بلمسة كراميل ذهبية."},
-  {img:"32.jpeg",cat:"hot",ar:"موكا",en:"Mocha",d:"إسبريسو وشوكولاتة وحليب."},
-  {img:"40.jpeg",cat:"hot",ar:"وايت موكا",en:"White Mocha",d:"موكا بالشوكولاتة البيضاء."},
-  {img:"27.jpeg",cat:"hot",ar:"قهوة V60",en:"V60 Pour Over",d:"تقطير يدوي يبرز نكهة الحبة."},
+  {img:"02.jpeg",cat:"hot",ar:"إسبيرسو سنجل",en:"Single Espresso",d:"جرعة مركّزة من أجود حبوب البن.",price:"60"},
+  {img:"03.jpeg",cat:"hot",ar:"إسبيرسو دبل",en:"Double Espresso",d:"جرعتان من الإسبريسو الغني.",price:"100"},
+  {img:"14.jpeg",cat:"hot",ar:"أمريكانو",en:"Americano",d:"إسبريسو ممدود بالماء الساخن.",price:"80 / 120"},
+  {img:"28.jpeg",cat:"hot",ar:"كابتشينو",en:"Cappuccino",d:"إسبريسو مع رغوة حليب مخمليّة.",price:"80 / 100"},
+  {img:"31.jpeg",cat:"hot",ar:"لاتيه",en:"Latte",d:"حليب مبخّر ناعم فوق إسبريسو.",price:"130"},
+  {img:"23.jpeg",cat:"hot",ar:"سبانيش لاتيه",en:"Spanish Latte",d:"لاتيه بالحليب المكثّف المحلّى.",price:"150",star:true},
+  {img:"29.jpeg",cat:"hot",ar:"كراميل لاتيه",en:"Caramel Latte",d:"لاتيه بلمسة كراميل ذهبية.",price:"150"},
+  {img:"32.jpeg",cat:"hot",ar:"موكا",en:"Mocha",d:"إسبريسو وشوكولاتة وحليب.",price:"150"},
+  {img:"40.jpeg",cat:"hot",ar:"وايت موكا",en:"White Mocha",d:"موكا بالشوكولاتة البيضاء.",price:"150"},
+  {img:"39.jpeg",cat:"hot",ar:"هوت شوكليت",en:"Hot Chocolate",d:"شوكولاتة ساخنة كريمية.",price:"80 / 100"},
+  {img:"26.jpeg",cat:"hot",ar:"3 in 1",en:"3 in 1",d:"قهوة سريعة بطعم متكامل.",price:"80 / 100"},
+  {img:"27.jpeg",cat:"hot",ar:"V60 Hot",en:"V60 Hot",d:"تقطير يدوي يبرز نكهة الحبة.",price:"200"},
   {img:"12.jpeg",cat:"hot",ar:"القهوة",en:"House Coffee",d:"قهوتنا اليومية الطازجة."},
-  {img:"26.jpeg",cat:"hot",ar:"قهوة ٣ في ١",en:"3 in 1 Coffee",d:"قهوة سريعة بطعم متكامل."},
-  {img:"39.jpeg",cat:"hot",ar:"هوت شوكليت",en:"Hot Chocolate",d:"شوكولاتة ساخنة كريمية."},
   // iced
-  {img:"09.jpeg",cat:"iced",ar:"آيس لاتيه",en:"Iced Latte",d:"لاتيه بارد منعش على الثلج."},
-  {img:"06.jpeg",cat:"iced",ar:"آيس سبانيش لاتيه",en:"Iced Spanish Latte",d:"سبانيش لاتيه مثلّج بالحليب المكثّف.",star:true},
-  {img:"07.jpeg",cat:"iced",ar:"آيس كراميل لاتيه",en:"Iced Caramel Latte",d:"كراميل لاتيه بارد بطبقات ذهبية."},
-  {img:"08.jpg", cat:"iced",ar:"آيس كراميل لاتيه بابل",en:"Bubble Iced Caramel Latte",d:"كراميل لاتيه مثلّج مع لؤلؤ البوبا.",star:true},
-  {img:"10.jpeg",cat:"iced",ar:"آيس موكا",en:"Iced Mocha",d:"موكا باردة بالشوكولاتة."},
-  {img:"11.jpeg",cat:"iced",ar:"آيس وايت موكا",en:"Iced White Mocha",d:"وايت موكا مثلّجة كريمية."},
-  {img:"05.jpeg",cat:"iced",ar:"آيس V60",en:"Iced V60",d:"تقطير V60 على الثلج."},
-  {img:"13.jpeg",cat:"iced",ar:"القهوة الباردة",en:"Iced Coffee",d:"قهوة باردة سوداء منعشة."},
+  {img:"09.jpeg",cat:"cold",ar:"آيس لاتيه",en:"Iced Latte",d:"لاتيه بارد منعش على الثلج.",price:"150"},
+  {img:"06.jpeg",cat:"cold",ar:"آيس سبانيش لاتيه",en:"Iced Spanish Latte",d:"سبانيش لاتيه مثلّج بالحليب المكثّف.",price:"190",star:true},
+  {img:"07.jpeg",cat:"cold",ar:"آيس كراميل لاتيه",en:"Iced Caramel Latte",d:"كراميل لاتيه بارد بطبقات ذهبية.",price:"190"},
+  {img:"10.jpeg",cat:"cold",ar:"آيس موكا",en:"Iced Mocha",d:"موكا باردة بالشوكولاتة.",price:"190"},
+  {img:"11.jpeg",cat:"cold",ar:"آيس وايت موكا",en:"Iced White Mocha",d:"وايت موكا مثلّجة كريمية.",price:"190"},
+  {img:"05.jpeg",cat:"cold",ar:"V60 Cold",en:"V60 Cold",d:"تقطير V60 على الثلج.",price:"250"},
+  {img:"13.jpeg",cat:"cold",ar:"القهوة الباردة",en:"Iced Coffee",d:"قهوة باردة سوداء منعشة."},
+  // bubble drinks
+  {img:"08.jpg", cat:"bubble",ar:"آيس كراميل لاتيه بابل",en:"Iced Caramel Latte Bubble",d:"كراميل لاتيه مثلّج مع لؤلؤ البوبا.",price:"250",star:true},
+  {img:"20.jpg", cat:"bubble",ar:"حليب وفريز بابل",en:"Strawberry Milk Bubble",d:"حليب الفراولة مع لؤلؤ البوبا.",price:"240",star:true},
   // bubble & mojito
-  {img:"15.jpg", cat:"bubble",ar:"بابل موهيتو",en:"Bubble Mojito",d:"موهيتو منعش مع لؤلؤ البوبا.",star:true},
-  {img:"04.jpg", cat:"bubble",ar:"موهيتو ميكس",en:"Mojito Mix",d:"خليط الموهيتو المنعش."},
-  {img:"16.jpg", cat:"bubble",ar:"باشن فروت",en:"Passion Fruit",d:"نكهة الباشن فروت الاستوائية."},
-  {img:"17.jpg", cat:"bubble",ar:"بطيخ",en:"Watermelon",d:"بطيخ منعش على الثلج."},
-  {img:"18.jpg", cat:"bubble",ar:"بلو بيري",en:"Blueberry",d:"توت أزرق حلو ومنعش."},
-  {img:"19.jpg", cat:"bubble",ar:"بلو هاواي",en:"Blue Hawaii",d:"أزرق استوائي منعش."},
-  {img:"22.jpg", cat:"bubble",ar:"رمان",en:"Pomegranate",d:"رمان طبيعي منعش."},
-  {img:"25.jpg", cat:"bubble",ar:"فراولة",en:"Strawberry",d:"فراولة منعشة على الثلج."},
-  {img:"30.jpg", cat:"bubble",ar:"كيوي",en:"Kiwi",d:"كيوي أخضر منعش."},
-  {img:"20.jpg", cat:"bubble",ar:"حليب بابل بالفراولة",en:"Bubble Strawberry Milk",d:"حليب الفراولة مع لؤلؤ البوبا.",star:true},
+  {img:"19.jpg", cat:"mojito",ar:"بلو هاواي",en:"Blue Hawaii",d:"أزرق استوائي منعش.",price:"190"},
+  {img:"18.jpg", cat:"mojito",ar:"بلو بيري",en:"Blueberry",d:"توت أزرق حلو ومنعش.",price:"190"},
+  {img:"25.jpg", cat:"mojito",ar:"فريز",en:"Strawberry",d:"فراولة منعشة على الثلج.",price:"190"},
+  {img:"17.jpg", cat:"mojito",ar:"بطيخ",en:"Watermelon",d:"بطيخ منعش على الثلج.",price:"190"},
+  {img:"22.jpg", cat:"mojito",ar:"رمان",en:"Pomegranate",d:"رمان طبيعي منعش.",price:"190"},
+  {img:"16.jpg", cat:"mojito",ar:"باشن فروت",en:"Passion Fruit",d:"نكهة الباشن فروت الاستوائية.",price:"190"},
+  {img:"30.jpg", cat:"mojito",ar:"كيوي",en:"Kiwi",d:"كيوي أخضر منعش.",price:"190"},
+  {img:"04.jpg", cat:"mojito",ar:"مكسي",en:"Mix",d:"خليط الموهيتو المنعش.",price:"220"},
+  {img:"15.jpg", cat:"mojito",ar:"بابل موهيتو",en:"Bubble Mojito",d:"موهيتو منعش مع لؤلؤ البوبا.",star:true},
   // milkshakes
-  {img:"33.jpg", cat:"shake",ar:"ميلك شيك براونيز",en:"Brownie Milkshake",d:"ميلك شيك بقطع البراوني.",star:true},
-  {img:"34.jpg", cat:"shake",ar:"ميلك شيك شوكولا",en:"Chocolate Milkshake",d:"شوكولاتة غنية ومثلّجة."},
-  {img:"35.jpg", cat:"shake",ar:"ميلك شيك فانيلا",en:"Vanilla Milkshake",d:"فانيلا كريمية كلاسيكية."},
-  {img:"36.jpg", cat:"shake",ar:"ميلك شيك فراولة",en:"Strawberry Milkshake",d:"فراولة طازجة ومثلّجة."},
-  {img:"37.jpg", cat:"shake",ar:"ميلك شيك كيندر",en:"Kinder Milkshake",d:"بنكهة كيندر المحبوبة.",star:true},
-  {img:"38.jpg", cat:"shake",ar:"ميلك شيك لوتس",en:"Lotus Milkshake",d:"بسكويت لوتس كراميلي.",star:true},
+  {img:"34.jpg", cat:"shake",ar:"شوكولا",en:"Chocolate",d:"شوكولاتة غنية ومثلّجة.",price:"190"},
+  {img:"35.jpg", cat:"shake",ar:"فانيلا",en:"Vanilla",d:"فانيلا كريمية كلاسيكية.",price:"190"},
+  {img:"36.jpg", cat:"shake",ar:"فريز",en:"Strawberry",d:"فراولة طازجة ومثلّجة.",price:"190"},
+  {img:"37.jpg", cat:"shake",ar:"كيندر",en:"Kinder",d:"بنكهة كيندر المحبوبة.",price:"230",star:true},
+  {img:"38.jpg", cat:"shake",ar:"لوتس",en:"Lotus",d:"بسكويت لوتس كراميلي.",price:"190",star:true},
+  {img:"33.jpg", cat:"shake",ar:"براونيز",en:"Brownies",d:"ميلك شيك بقطع البراوني.",price:"230",star:true},
   // extras
   {img:"24.jpeg",cat:"extra",ar:"شوت إسبريسو إضافي",en:"Extra Espresso Shot",d:"جرعة إسبريسو إضافية."},
   {img:"21.jpeg",cat:"extra",ar:"حليب مكثف محلى",en:"Condensed Milk",d:"إضافة حليب مكثّف محلّى."},
@@ -707,6 +723,7 @@ function renderGrid(filter){
         '<h3>'+p.ar+'</h3>'+
         '<div class="en">'+p.en+'</div>'+
         '<p class="desc">'+p.d+'</p>'+
+        (p.price ? '<div class="price">'+p.price+'<span class="cur">ل.س</span></div>' : '')+
       '</div>';
     grid.appendChild(card);
   });
