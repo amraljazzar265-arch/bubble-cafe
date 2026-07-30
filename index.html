@@ -351,6 +351,21 @@ section{position:relative;z-index:1}
   border:1px solid rgba(255,255,255,.28);
   padding:5px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4)}
 .badge-star svg{width:12px;height:12px}
+/* "add popping boba" tab — tucked above the card, drops into view when the
+   card is reached. Sits opposite .badge-star so the two never collide. */
+.badge-boba{position:absolute;top:0;inset-inline-start:18px;z-index:2;
+  display:inline-flex;align-items:baseline;gap:5px;
+  padding:8px 13px 9px;border-radius:0 0 13px 13px;
+  font-family:var(--font-display);font-weight:700;font-size:.76rem;color:#2A1509;
+  background:linear-gradient(180deg,var(--honey-hi),var(--honey));
+  box-shadow:0 7px 18px rgba(0,0,0,.42);white-space:nowrap;
+  transform:translateY(-101%);
+  transition:transform .6s cubic-bezier(.22,1,.36,1) .12s}
+.badge-boba b{font-size:.92rem;font-weight:800}
+.badge-boba i{font-family:var(--font-body);font-style:normal;font-size:.62rem;
+  font-weight:700;opacity:.72}
+.card.is-seen .badge-boba{transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.badge-boba{transform:translateY(0);transition:none}}
 
 /* ============================================================
    Footer
@@ -655,9 +670,11 @@ const P = [
   {img:"32.jpeg",cat:"hot",ar:"موكا",en:"Mocha",d:"إسبريسو وشوكولاتة وحليب.",price:"150"},
   {img:"40.jpeg",cat:"hot",ar:"وايت موكا",en:"White Mocha",d:"موكا بالشوكولاتة البيضاء.",price:"150"},
   {img:"39.jpeg",cat:"hot",ar:"هوت شوكليت",en:"Hot Chocolate",d:"شوكولاتة ساخنة كريمية.",price:"80 / 100"},
+  {img:"41.jpg", cat:"hot",ar:"نسكافيه",en:"Nescafe",d:"نسكافيه ساخن سريع التحضير.",price:"60 / 100"},
   {img:"26.jpeg",cat:"hot",ar:"3 in 1",en:"3 in 1",d:"قهوة سريعة بطعم متكامل.",price:"80 / 100"},
   {img:"27.jpeg",cat:"hot",ar:"V60 Hot",en:"V60 Hot",d:"تقطير يدوي يبرز نكهة الحبة.",price:"200"},
-  // iced
+  // cold
+  {img:"42.jpg", cat:"cold",ar:"آيس أمريكانو",en:"Iced Americano",d:"أمريكانو بارد منعش على الثلج.",price:"120"},
   {img:"09.jpeg",cat:"cold",ar:"آيس لاتيه",en:"Iced Latte",d:"لاتيه بارد منعش على الثلج.",price:"150"},
   {img:"06.jpeg",cat:"cold",ar:"آيس سبانيش لاتيه",en:"Iced Spanish Latte",d:"سبانيش لاتيه مثلّج بالحليب المكثّف.",price:"190",star:true},
   {img:"07.jpeg",cat:"cold",ar:"آيس كراميل لاتيه",en:"Iced Caramel Latte",d:"كراميل لاتيه بارد بطبقات ذهبية.",price:"190"},
@@ -666,16 +683,19 @@ const P = [
   {img:"05.jpeg",cat:"cold",ar:"V60 Cold",en:"V60 Cold",d:"تقطير V60 على الثلج.",price:"250"},
   // bubble drinks
   {img:"08.jpg", cat:"bubble",ar:"آيس كراميل لاتيه بابل",en:"Iced Caramel Latte Bubble",d:"كراميل لاتيه مثلّج مع لؤلؤ البوبا.",price:"250",star:true},
+  {img:"43.jpg", cat:"bubble",ar:"آيس سبانيش لاتيه بابل",en:"Iced Spanish Latte Bubble",d:"سبانيش لاتيه مثلّج مع لؤلؤ البوبا.",price:"240",star:true},
   {img:"20.jpg", cat:"bubble",ar:"حليب وفريز بابل",en:"Strawberry Milk Bubble",d:"حليب الفراولة مع لؤلؤ البوبا.",price:"240",star:true},
-  // bubble & mojito
+  {img:"44.jpg", cat:"bubble",ar:"آيس موكا بابل",en:"Iced Mocha Bubble",d:"موكا مثلّجة مع لؤلؤ البوبا.",price:"250",star:true},
+  // mojito
   {img:"19.jpg", cat:"mojito",ar:"بلو هاواي",en:"Blue Hawaii",d:"أزرق استوائي منعش.",price:"190"},
   {img:"18.jpg", cat:"mojito",ar:"بلو بيري",en:"Blueberry",d:"توت أزرق حلو ومنعش.",price:"190"},
-  {img:"25.jpg", cat:"mojito",ar:"فريز",en:"Strawberry",d:"فراولة منعشة على الثلج.",price:"190"},
+  {img:"25.jpg", cat:"mojito",ar:"فريز",en:"Strawberry",d:"فراولة منعشة على الثلج.",price:"190",boba:"240"},
   {img:"17.jpg", cat:"mojito",ar:"بطيخ",en:"Watermelon",d:"بطيخ منعش على الثلج.",price:"190"},
   {img:"22.jpg", cat:"mojito",ar:"رمان",en:"Pomegranate",d:"رمان طبيعي منعش.",price:"190"},
-  {img:"16.jpg", cat:"mojito",ar:"باشن فروت",en:"Passion Fruit",d:"نكهة الباشن فروت الاستوائية.",price:"190"},
+  {img:"16.jpg", cat:"mojito",ar:"باشن فروت",en:"Passion Fruit",d:"نكهة الباشن فروت الاستوائية.",price:"190",boba:"240"},
   {img:"30.jpg", cat:"mojito",ar:"كيوي",en:"Kiwi",d:"كيوي أخضر منعش.",price:"190"},
-  {img:"04.jpg", cat:"mojito",ar:"مكسي",en:"Mix",d:"خليط الموهيتو المنعش.",price:"220"},
+  {img:"45.jpg", cat:"mojito",ar:"رازبيري",en:"Raspberry",d:"توت العليق المنعش.",price:"190"},
+  {img:"04.jpg", cat:"mojito",ar:"مكسي",en:"Mix",d:"خليط الموهيتو المنعش.",price:"220",boba:"240"},
   // milkshakes
   {img:"34.jpg", cat:"shake",ar:"شوكولا",en:"Chocolate",d:"شوكولاتة غنية ومثلّجة.",price:"190"},
   {img:"35.jpg", cat:"shake",ar:"فانيلا",en:"Vanilla",d:"فانيلا كريمية كلاسيكية.",price:"190"},
@@ -711,6 +731,7 @@ function renderGrid(filter){
     card.innerHTML =
       '<img class="card-img" src="'+IMG(p.img)+'" alt="'+p.ar+'" loading="lazy" decoding="async" />'+
       (p.star?'<span class="badge-star">'+STAR+' الأكثر طلباً</span>':'')+
+      (p.boba?'<span class="badge-boba">إضافة بوبا <b>'+p.boba+'</b><i>ل.س</i></span>':'')+
       '<div class="card-overlay">'+
         '<h3>'+p.ar+'</h3>'+
         '<div class="en">'+p.en+'</div>'+
@@ -718,8 +739,21 @@ function renderGrid(filter){
         (p.price ? '<div class="price">'+p.price+'<span class="cur">ل.س</span></div>' : '')+
       '</div>';
     grid.appendChild(card);
+    if(p.boba) watchForBoba(card);
   });
   attachTilt();
+}
+
+/* Drop the "add popping boba" tab once its card is actually reached.
+   No observer support (or reduced motion) means the CSS already shows it. */
+const bobaWatcher = ("IntersectionObserver" in window) ? new IntersectionObserver((entries,obs)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add("is-seen"); obs.unobserve(e.target); }
+  });
+}, {threshold:.35}) : null;
+function watchForBoba(card){
+  if(bobaWatcher && !reduce) bobaWatcher.observe(card);
+  else card.classList.add("is-seen");
 }
 
 /* ---------- Category tabs ---------- */
