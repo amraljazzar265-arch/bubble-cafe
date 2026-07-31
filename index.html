@@ -814,7 +814,19 @@ FEATURED.forEach((p,i)=>{
     '<div class="gal-cap"><h3>'+p.ar+'</h3><span>'+p.en+'</span></div>';
   ring.appendChild(el);
 });
-function radius(){ return parseInt(getComputedStyle(document.documentElement).getPropertyValue("--gal-radius")); }
+/* Neighbours on the ring sit a chord of 2R·sin(pi/N) apart, so the radius has
+   to grow with the number of signatures. The authored --gal-radius suited
+   seven cards; at nine it left the phone chord (185px) narrower than the card
+   (200px) and they overlapped. Treat the CSS value as a floor and widen it
+   whenever N needs the room. */
+function radius(){
+  const cs = getComputedStyle(document.documentElement);
+  const floor = parseInt(cs.getPropertyValue("--gal-radius"));
+  const cardW = parseInt(cs.getPropertyValue("--gal-cardw"));
+  const gap   = Math.max(24, cardW * .12);
+  const needed = (cardW + gap) / (2 * Math.sin(Math.PI / N));
+  return Math.max(floor, Math.round(needed));
+}
 function layoutRing(){
   const R = radius();
   ring.querySelectorAll(".gal-item").forEach((el,i)=>{
