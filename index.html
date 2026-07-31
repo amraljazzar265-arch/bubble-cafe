@@ -351,21 +351,25 @@ section{position:relative;z-index:1}
   border:1px solid rgba(255,255,255,.28);
   padding:5px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4)}
 .badge-star svg{width:12px;height:12px}
-/* "add popping boba" tab — tucked above the card, drops into view when the
-   card is reached. Sits opposite .badge-star so the two never collide. */
-.badge-boba{position:absolute;top:0;inset-inline-start:18px;z-index:2;
-  display:inline-flex;align-items:baseline;gap:5px;
+/* "add popping boba" tab — parked above the card's top edge and dropped into
+   view when the card is reached. The slot clips it while it is parked: cards
+   do not hide their overflow (the glow bloom lives outside them), so without
+   this the hidden tab hangs over the card in the row above. The slot's bottom
+   padding is inside the clip region, leaving room for the tab's shadow. */
+.boba-slot{position:absolute;top:0;inset-inline-start:18px;z-index:2;
+  display:flex;overflow:hidden;padding-bottom:18px;pointer-events:none}
+.badge-boba{display:inline-flex;align-items:baseline;gap:5px;
   padding:8px 13px 9px;border-radius:0 0 13px 13px;
   font-family:var(--font-display);font-weight:700;font-size:.76rem;color:#2A1509;
   background:linear-gradient(180deg,var(--honey-hi),var(--honey));
-  box-shadow:0 7px 18px rgba(0,0,0,.42);white-space:nowrap;
+  box-shadow:0 5px 12px rgba(0,0,0,.45);white-space:nowrap;
   transform:translateY(-101%);
   transition:transform .6s cubic-bezier(.22,1,.36,1) .12s}
 .badge-boba b{font-size:.92rem;font-weight:800}
 .badge-boba i{font-family:var(--font-body);font-style:normal;font-size:.62rem;
   font-weight:700;opacity:.72}
 .card.is-seen .badge-boba{transform:translateY(0)}
-@media(prefers-reduced-motion:reduce){.badge-boba{transform:translateY(0);transition:none}}
+@media(prefers-reduced-motion:reduce){.badge-boba{transform:none;transition:none}}
 
 /* ============================================================
    Footer
@@ -731,7 +735,7 @@ function renderGrid(filter){
     card.innerHTML =
       '<img class="card-img" src="'+IMG(p.img)+'" alt="'+p.ar+'" loading="lazy" decoding="async" />'+
       (p.star?'<span class="badge-star">'+STAR+' الأكثر طلباً</span>':'')+
-      (p.boba?'<span class="badge-boba">إضافة بوبا <b>'+p.boba+'</b><i>ل.س</i></span>':'')+
+      (p.boba?'<span class="boba-slot"><span class="badge-boba">إضافة بوبا <b>'+p.boba+'</b><i>ل.س</i></span></span>':'')+
       '<div class="card-overlay">'+
         '<h3>'+p.ar+'</h3>'+
         '<div class="en">'+p.en+'</div>'+
