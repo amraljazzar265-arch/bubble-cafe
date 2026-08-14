@@ -1764,9 +1764,11 @@ startGal();
    message. Nothing is stored by us, so there is nothing to protect.
    ============================================================ */
 
-/* Behind a flag until the shop's real details arrive. ?order=1 turns it on;
-   ordinary visitors see the menu exactly as before. */
-const ORDER = new URLSearchParams(location.search).has("order");
+/* Live for everyone. This was behind ?order=1 while the shop's WhatsApp
+   number was still missing -- an order button that goes nowhere is worse
+   than no order button. The number is set now, so the flag has done its
+   job: a customer cannot be expected to know about a query string. */
+const ORDER = true;
 
 /* ---- TODO: still owed by the shop ---- */
 /* 0952515705 in international form: Syria is 963 and the trunk 0 is dropped.
