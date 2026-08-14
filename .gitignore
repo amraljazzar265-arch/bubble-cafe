@@ -14,3 +14,9 @@ logo/logo.jpeg
 
 # build-time mapping of the original product photos - local only
 assets/manifest.tsv
+
+# local colour trial page — never deployed
+_colors.html
+
+# incoming photo drops — the converted WebPs in assets/menu are what ships
+New data/
