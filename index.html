@@ -1734,20 +1734,25 @@ const CART_TTL = 24*60*60*1000;           // a two-week-old basket is not intent
 const WA_MAX = 3000;
 const cart = new Map();                   // key -> {img, oi, ex, q, note}
 const byImg = img => P.find(p=>p.img===img);
-const keyOf = (img,oi,ex) => img+"|"+oi+"|"+(ex?1:0);
+/* A drink can carry more than one yes/no extra -- the espresso is offered with
+   a whitener and with نسلة, independently -- so the answer is a bitmask: bit i
+   is the i-th group's "add". A drink with a single extra still stores 0 or 1,
+   which is exactly what baskets already saved in localStorage hold. */
+const exList = p => p.extras || (p.extra ? [p.extra] : []);
+const keyOf = (img,oi,ex) => img+"|"+oi+"|"+(ex||0);
 const money = n => n.toLocaleString("en-US");
 
 function unitPrice(p,oi,ex){
   // first number only: stripping every non-digit would turn a "80 / 100"
   // price that somehow lacked opts into 80100 rather than 80
   let n = p.opts ? p.opts[oi].p : parseInt((String(p.price).match(/\d+/)||[0])[0],10) || 0;
-  if(ex && p.extra) n += p.extra.p;
+  exList(p).forEach((e,i)=>{ if(ex >> i & 1) n += e.p; });
   return n;
 }
 function labelOf(p,oi,ex){
   const bits = [];
   if(p.opts) bits.push(p.opts[oi].ar);
-  if(ex && p.extra) bits.push(p.extra.ar);
+  exList(p).forEach((e,i)=>{ if(ex >> i & 1) bits.push(e.ar); });
   return bits.join(" + ");
 }
 const cartCount = () => [...cart.values()].reduce((s,l)=>s+l.q,0);
@@ -1780,7 +1785,7 @@ function load(){
     raw.items.forEach(({k,q,n})=>{
       const [img,oi,ex] = k.split("|");
       if(!byImg(img)) return;             // item left the menu since
-      cart.set(k, {img, oi:+oi, ex:ex==="1", q, note:n});
+      cart.set(k, {img, oi:+oi, ex:+ex||0, q, note:n});
     });
   }catch(e){}
 }
@@ -1817,7 +1822,7 @@ function addItem(p,oi,ex,qty,note,card){
   const k = keyOf(p.img,oi,ex);
   const line = cart.get(k);
   if(line){ line.q += qty; if(note) line.note = note; }
-  else cart.set(k,{img:p.img, oi, ex:!!ex, q:qty, note:note||""});
+  else cart.set(k,{img:p.img, oi, ex:ex||0, q:qty, note:note||""});
   save(); syncCards(); paintBar();
   if(card && !reduce){                    // the card's own glow ring, one turn
     card.classList.remove("added"); void card.offsetWidth; card.classList.add("added");
@@ -1896,15 +1901,16 @@ function paintCta(){
   document.getElementById("prodPrice").textContent = money(unit);
   document.getElementById("ctaPrice").textContent  = money(unit * draft.q) + " ل.س";
   document.getElementById("ctaQtyN").textContent   = draft.q;
-  // the size group and the extras group are painted separately: they are the
-  // same buttons visually but they answer two different questions
+  // the size group and the extras groups are painted separately: they are the
+  // same buttons visually but they answer different questions
   optBody.querySelectorAll(".opts:not(.opts-ex) button").forEach((b,i)=>
     b.classList.toggle("sel", i===draft.oi));
   optBody.querySelectorAll(".opts-ex button").forEach(b=>
-    b.classList.toggle("sel", (b.dataset.ex === "1") === !!draft.ex));
+    b.classList.toggle("sel",
+      (b.dataset.ex === "1") === !!(draft.ex >> +b.dataset.eg & 1)));
 }
 function openProduct(p,card){
-  draft = {p, oi:0, ex:false, q:1, note:"", card};
+  draft = {p, oi:0, ex:0, q:1, note:"", card};
   const cat = (CATS.find(c=>c.id===p.cat)||{}).ar || "";
   optBody.innerHTML =
     /* --shot feeds the blurred fill behind the photo, so it is always
@@ -1925,18 +1931,20 @@ function openProduct(p,card){
         '<div class="en"><bdi dir="ltr">'+p.en+'</bdi></div></div>'+
       '<div class="prod-price"><b id="prodPrice">0</b><span>ل.س</span></div>'+
     '</div>'+
-    (p.opts ? '<p class="sec-label">اختر '+(p.extra?"الحجم":(p.boba?"الإضافة":"الحجم"))+'</p>'+
+    (p.opts ? '<p class="sec-label">اختر '+(exList(p).length?"الحجم":(p.boba?"الإضافة":"الحجم"))+'</p>'+
       '<div class="opts">'+p.opts.map((o,i)=>
         '<button type="button" data-oi="'+i+'"><span>'+o.ar+'</span>'+
         '<i>'+money(o.p)+' ل.س</i></button>').join("")+'</div>' : '')+
     /* two buttons rather than a tickbox: "بدون" is a real choice a customer
-       makes, and a box left unticked does not read as one */
-    (p.extra ? '<p class="sec-label">'+(p.extra.title||"الإضافة")+'</p>'+
+       makes, and a box left unticked does not read as one. Each extra gets its
+       own titled pair, so answering one says nothing about the others */
+    exList(p).map((e,gi)=>
+      '<p class="sec-label">'+(e.title||"الإضافة")+'</p>'+
       '<div class="opts opts-ex">'+
-        '<button type="button" data-ex="0"><span>'+(p.extra.off||"بدون")+'</span></button>'+
-        '<button type="button" data-ex="1"><span>'+p.extra.ar+'</span>'+
-        '<i>+ '+money(p.extra.p)+' ل.س</i></button>'+
-      '</div>' : '')+
+        '<button type="button" data-eg="'+gi+'" data-ex="0"><span>'+(e.off||"بدون")+'</span></button>'+
+        '<button type="button" data-eg="'+gi+'" data-ex="1"><span>'+e.ar+'</span>'+
+        '<i>+ '+money(e.p)+' ل.س</i></button>'+
+      '</div>').join("")+
     '<p class="sec-label">أضف ملاحظتك على الطلب</p>'+
     '<div class="field"><textarea id="optNote" rows="2" placeholder="اختياري"></textarea></div>'+
     '</div>';   // closes .prod-body
@@ -1944,7 +1952,11 @@ function openProduct(p,card){
   optBody.querySelectorAll(".opts:not(.opts-ex) button").forEach(b=>
     b.addEventListener("click", ()=>{ draft.oi = +b.dataset.oi; paintCta(); }));
   optBody.querySelectorAll(".opts-ex button").forEach(b=>
-    b.addEventListener("click", ()=>{ draft.ex = b.dataset.ex === "1"; paintCta(); }));
+    b.addEventListener("click", ()=>{
+      const bit = 1 << +b.dataset.eg;
+      draft.ex = b.dataset.ex === "1" ? (draft.ex | bit) : (draft.ex & ~bit);
+      paintCta();
+    }));
 
   paintCta();
   /* The blurred fill is switched on only when the photo really is
@@ -2159,7 +2171,7 @@ function repeatLast(){
     cart.clear();
     last.forEach(({k,q,n})=>{
       const [img,oi,ex] = k.split("|");
-      if(byImg(img)) cart.set(k,{img,oi:+oi,ex:ex==="1",q,note:n});
+      if(byImg(img)) cart.set(k,{img,oi:+oi,ex:+ex||0,q,note:n});
     });
     save(); syncCards(); paintBar(); renderCart();
   }catch(e){}

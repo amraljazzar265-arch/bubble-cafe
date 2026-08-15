@@ -40,13 +40,23 @@ function clean(list) {
     if (Array.isArray(raw.opts)) {
       out.opts = raw.opts.map(o => ({ ar: String(o.ar || ""), p: price(o.p) }));
     }
-    if (raw.extra && typeof raw.extra === "object") {
-      out.extra = { ar: String(raw.extra.ar || ""), p: price(raw.extra.p) };
-      if (raw.extra.off) out.extra.off = String(raw.extra.off);
-      if (raw.extra.title) out.extra.title = String(raw.extra.title);
+    /* `extras` is a list of independent yes/no additions; `extra` is the older
+       single-addition form and is still read so an old payload cannot silently
+       drop the choice from a drink. */
+    if (Array.isArray(raw.extras)) {
+      out.extras = raw.extras.slice(0, 8).map(extra);
+    } else if (raw.extra && typeof raw.extra === "object") {
+      out.extra = extra(raw.extra);
     }
     return out;
   });
+}
+function extra(raw) {
+  if (!raw || typeof raw !== "object") throw new Error("إضافة غير صالحة");
+  const out = { ar: String(raw.ar || ""), p: price(raw.p) };
+  if (raw.off) out.off = String(raw.off);
+  if (raw.title) out.title = String(raw.title);
+  return out;
 }
 function price(v) {
   const n = Math.round(Number(v));

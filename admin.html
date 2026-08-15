@@ -252,9 +252,9 @@ function priceInputs(p, i){
     '<span class="p-in"><label>'+o.ar+'</label>'+
     '<input type="number" lang="en" inputmode="numeric" min="0" step="5" value="'+o.p+'" '+
     'data-i="'+i+'" data-opt="'+oi+'" /></span>').join("")
-    + (p.extra ? '<span class="p-in"><label>'+p.extra.ar+'</label>'+
-        '<input type="number" lang="en" inputmode="numeric" min="0" step="5" value="'+p.extra.p+'" '+
-        'data-i="'+i+'" data-extra="1" /></span>' : "");
+    + exList(p).map((e,gi) => '<span class="p-in"><label>'+e.ar+'</label>'+
+        '<input type="number" lang="en" inputmode="numeric" min="0" step="5" value="'+e.p+'" '+
+        'data-i="'+i+'" data-extra="'+gi+'" /></span>').join("");
   return '<span class="p-in"><label>السعر</label>'+
     '<input type="number" lang="en" inputmode="numeric" min="0" step="5" value="'+(parseInt(p.price,10)||0)+'" '+
     'data-i="'+i+'" data-flat="1" /></span>';
@@ -268,9 +268,9 @@ listEl.addEventListener("input", e => {
     p.opts[+t.dataset.opt].p = v;
     p.price = rebuildPrice(p);
     if(p.boba) p.boba = String(p.opts[p.opts.length-1].p);
-  } else if(t.dataset.extra){
-    p.extra.p = v;
-    if(p.note) p.note = "إضافة " + p.extra.ar.replace(/^إضافة\s*/, "") + " " + v + " ل.س";
+  } else if(t.dataset.extra !== undefined){
+    exList(p)[+t.dataset.extra].p = v;
+    if(p.note) p.note = noteOf(p);
   } else {
     p.price = String(v);
   }
@@ -290,9 +290,23 @@ listEl.addEventListener("click", e => {
   paintBar();
 });
 
+/* An item can offer several independent extras (the espresso: مبيّض and نسلة),
+   so each one gets its own field and the card's note is rewritten from all of
+   them together -- otherwise editing one price would erase the other's line. */
+const exList = p => p.extras || (p.extra ? [p.extra] : []);
+/* an Arabic comma, not a middot: a middot sitting against "ل.س" reads as a
+   stray Arabic zero on the card */
+const noteOf = p => exList(p)
+  .map(e => "إضافة " + e.ar.replace(/^إضافة\s*/, "") + " " + e.p + " ل.س")
+  .join("، ");
+
 /* the card's price line is derived, never typed */
 function rebuildPrice(p){
   const nums = p.opts.map(o => o.p);
+  /* a boba drink carries its own "إضافة بوبا NNN" tab on the card, so its
+     price line stays the base number: joining both would print the same
+     number twice, once in the line and once on the tab */
+  if(p.boba) return String(nums[0]);
   if(p.opts.length === 2 && /سنجل/.test(p.opts[0].ar))
     return nums[0]+" سنجل / "+nums[1]+" دبل";
   return nums.join(" / ");
