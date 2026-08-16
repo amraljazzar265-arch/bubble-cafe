@@ -5,7 +5,7 @@
 
    soldout: true  =  الصنف غير متوفّر اليوم (يظهر بالمنيو ولا يُطلب)
    ============================================================ */
-const MENU_VERSION = 1786815756949;
+const MENU_VERSION = 1786901798942;
 const P = [
   {"img":"03.jpeg","cat":"hot","ar":"إسبيرسو","en":"Espresso","d":"جرعة مركّزة من أجود حبوب البن.","price":"60 سنجل / 100 دبل","note":"إضافة مبيّض 20 ل.س، إضافة نسلة 20 ل.س","opts":[{"ar":"سنجل","p":60},{"ar":"دبل","p":100}],"extras":[{"ar":"إضافة مبيّض","p":20,"off":"بدون مبيّض","title":"المبيّض"},{"ar":"إضافة نسلة","p":20,"off":"بدون نسلة","title":"النسلة"}]},
   {"img":"14.jpeg","cat":"hot","ar":"أمريكانو","en":"Americano","d":"إسبريسو ممدود بالماء الساخن.","price":"80 / 120","opts":[{"ar":"صغير","p":80},{"ar":"كبير","p":120}]},
@@ -32,19 +32,19 @@ const P = [
   {"img":"44.jpg","cat":"bubble","ar":"آيس موكا بابل","en":"Iced Mocha Bubble","d":"موكا مثلّجة مع لؤلؤ البوبا.","price":"250","star":true},
   {"img":"19.jpg","cat":"mojito","ar":"بلو هاواي","en":"Blue Hawaii","d":"أزرق استوائي منعش.","price":"190","star":true},
   {"img":"18.jpg","cat":"mojito","ar":"بلو بيري","en":"Blueberry","d":"توت أزرق حلو ومنعش.","price":"190"},
-  {"img":"25.jpg","cat":"mojito","ar":"فريز","en":"Strawberry","d":"فراولة منعشة على الثلج.","price":"190","boba":"260","opts":[{"ar":"بدون بوبا","p":190},{"ar":"مع بوبا","p":260}]},
+  {"img":"25.jpg","cat":"mojito","ar":"فريز","en":"Strawberry","d":"فراولة منعشة على الثلج.","price":"190","boba":"250","opts":[{"ar":"بدون بوبا","p":190},{"ar":"مع بوبا","p":250}]},
   {"img":"17.jpg","cat":"mojito","ar":"بطيخ","en":"Watermelon","d":"بطيخ منعش على الثلج.","price":"190"},
   {"img":"22.jpg","cat":"mojito","ar":"رمان","en":"Pomegranate","d":"رمان طبيعي منعش.","price":"190"},
-  {"img":"16.jpg","cat":"mojito","ar":"باشن فروت","en":"Passion Fruit","d":"نكهة الباشن فروت الاستوائية.","price":"190","boba":"260","opts":[{"ar":"بدون بوبا","p":190},{"ar":"مع بوبا","p":260}]},
+  {"img":"16.jpg","cat":"mojito","ar":"باشن فروت","en":"Passion Fruit","d":"نكهة الباشن فروت الاستوائية.","price":"190","boba":"250","opts":[{"ar":"بدون بوبا","p":190},{"ar":"مع بوبا","p":250}]},
   {"img":"30.jpg","cat":"mojito","ar":"كيوي","en":"Kiwi","d":"كيوي أخضر منعش.","price":"190","star":true},
   {"img":"45.jpg","cat":"mojito","ar":"رازبيري","en":"Raspberry","d":"توت العليق المنعش.","price":"190"},
-  {"img":"46.jpg","cat":"mojito","ar":"مانجا","en":"Mango","d":"مانجا استوائية كريمية.","price":"190","boba":"260","opts":[{"ar":"بدون بوبا","p":190},{"ar":"مع بوبا","p":260}]},
-  {"img":"04.jpg","cat":"mojito","ar":"ليمون","en":"Lemon","d":"ليمون ونعناع منعش على الثلج.","price":"220","boba":"260","opts":[{"ar":"بدون بوبا","p":220},{"ar":"مع بوبا","p":260}]},
-  {"img":"mix-4.webp","cat":"mojito","ar":"بلوبيري بلو هاواي","en":"Blueberry Blue Hawaii","d":"توت أزرق مع بلو هاواي.","price":"220","deck":"mix"},
-  {"img":"mix-5.webp","cat":"mojito","ar":"كيوي ليمون","en":"Kiwi Lemon","d":"كيوي مع ليمون.","price":"220","deck":"mix"},
-  {"img":"mix-1.webp","cat":"mojito","ar":"تروبيكال فيوجن","en":"Tropical Fusion","d":"مانجا مع باشن فروت.","price":"220","deck":"mix"},
-  {"img":"mix-2.webp","cat":"mojito","ar":"بوم راز","en":"PomeRazz","d":"رمان مع رازبيري.","price":"220","deck":"mix"},
-  {"img":"mix-3.webp","cat":"mojito","ar":"بيري ميلون","en":"Berry Melon","d":"فراولة مع بطيخ.","price":"220","deck":"mix"},
+  {"img":"46.jpg","cat":"mojito","ar":"مانجا","en":"Mango","d":"مانجا استوائية كريمية.","price":"190","boba":"250","opts":[{"ar":"بدون بوبا","p":190},{"ar":"مع بوبا","p":250}]},
+  {"img":"04.jpg","cat":"mojito","ar":"ليمون","en":"Lemon","d":"ليمون ونعناع منعش على الثلج.","price":"190","boba":"250","opts":[{"ar":"بدون بوبا","p":190},{"ar":"مع بوبا","p":250}]},
+  {"img":"mix-4.webp","cat":"mojito","ar":"بلوبيري بلو هاواي","en":"Blueberry Blue Hawaii","d":"توت أزرق مع بلو هاواي.","price":"200","deck":"mix"},
+  {"img":"mix-5.webp","cat":"mojito","ar":"كيوي ليمون","en":"Kiwi Lemon","d":"كيوي مع ليمون.","price":"200","deck":"mix"},
+  {"img":"mix-1.webp","cat":"mojito","ar":"تروبيكال فيوجن","en":"Tropical Fusion","d":"مانجا مع باشن فروت.","price":"200","deck":"mix"},
+  {"img":"mix-2.webp","cat":"mojito","ar":"بوم راز","en":"PomeRazz","d":"رمان مع رازبيري.","price":"200","deck":"mix"},
+  {"img":"mix-3.webp","cat":"mojito","ar":"بيري ميلون","en":"Berry Melon","d":"فراولة مع بطيخ.","price":"200","deck":"mix"},
   {"img":"34.jpg","cat":"shake","ar":"شوكولا","en":"Chocolate","d":"شوكولاتة غنية ومثلّجة.","price":"190"},
   {"img":"35.jpg","cat":"shake","ar":"فانيلا","en":"Vanilla","d":"فانيلا كريمية كلاسيكية.","price":"190"},
   {"img":"36.jpg","cat":"shake","ar":"فريز","en":"Strawberry","d":"فراولة طازجة ومثلّجة.","price":"190"},
